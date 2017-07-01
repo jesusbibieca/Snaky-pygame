@@ -56,6 +56,8 @@ def gameLoop():
 			for event in pygame.event.get():
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_q:
+						gameDisplay.fill(white)
+						pygame.display.update()
 						gameOver = False
 						gameExit = True
 					if event.key == pygame.K_c:
@@ -96,6 +98,10 @@ def gameLoop():
 
 		if len (snakeList) > snakeSize:
 			del snakeList[0]
+
+		for eachSegment in snakeList[:-1]:
+			if eachSegment == snakeHead:
+				gameOver = True
 
 		snakeLenght(blockSize, snakeList)
 
