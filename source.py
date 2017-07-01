@@ -22,6 +22,10 @@ clock = pygame.time.Clock()
 
 font = pygame.font.SysFont(None, 25)
 
+def snakeLenght(blockSize, snakeList):
+	for XnY in snakeList:
+		pygame.draw.rect(gameDisplay, black, [XnY[0], XnY[1], blockSize, blockSize])
+
 def screenMessage(msg, color):
 	screenText = font.render(msg, True, color)
 	gameDisplay.blit(screenText, [displayWidth / 2, displayHeight / 2])
@@ -32,6 +36,9 @@ def gameLoop():
 	leader_y = displayHeight / 2
 	leader_x_change = 0
 	leader_y_change = 0
+
+	snakeList = []
+	snakeSize = 1
 
 	randAppleX = round (random.randrange(0, displayWidth - blockSize)/10.0) * 10.0
 	randAppleY = round (random.randrange(0, displayHeight - blockSize)/10.0) * 10.0
@@ -81,12 +88,23 @@ def gameLoop():
 
 		gameDisplay.fill(white)
 		pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, blockSize, blockSize])
-		pygame.draw.rect(gameDisplay, black, [leader_x, leader_y, blockSize, blockSize])
+				
+		snakeHead = []
+		snakeHead.append(leader_x)
+		snakeHead.append(leader_y)
+		snakeList.append(snakeHead)
+
+		if len (snakeList) > snakeSize:
+			del snakeList[0]
+
+		snakeLenght(blockSize, snakeList)
+
 		pygame.display.update()
 
 		if leader_x == randAppleX and leader_y == randAppleY:
 			randAppleX = round (random.randrange(0, displayWidth - blockSize)/10.0) * 10.0
 			randAppleY = round (random.randrange(0, displayHeight - blockSize)/10.0) * 10.0
+			snakeSize += 1
 
 		clock.tick(FPS)
 
